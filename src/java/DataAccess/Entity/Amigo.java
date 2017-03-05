@@ -31,8 +31,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Amigo.findAll", query = "SELECT a FROM Amigo a")
     , @NamedQuery(name = "Amigo.findByAmigoFecha", query = "SELECT a FROM Amigo a WHERE a.amigoFecha = :amigoFecha")
-    , @NamedQuery(name = "Amigo.findByAmigoIdA", query = "SELECT a FROM Amigo a WHERE a.amigoPK.amigoIdA = :amigoIdA")
-    , @NamedQuery(name = "Amigo.findByAmigoIdB", query = "SELECT a FROM Amigo a WHERE a.amigoPK.amigoIdB = :amigoIdB")})
+    , @NamedQuery(name = "Amigo.findByAmigoIdA", query = "SELECT a.amigoPK.amigoIdB FROM Amigo a WHERE a.amigoPK.amigoIdA = :amigoIdA")
+    , @NamedQuery(name = "Amigo.findByAmigoIdB", query = "SELECT a.amigoPK.amigoIdA FROM Amigo a WHERE a.amigoPK.amigoIdB = :amigoIdB")})
 public class Amigo implements Serializable {
 
     private static final long serialVersionUID = 1L;
