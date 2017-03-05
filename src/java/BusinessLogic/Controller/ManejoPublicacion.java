@@ -35,19 +35,13 @@ import java.util.List;
     }
     
     public List<Publicacion> publicaciones(Integer id){
+        // Crear un objeto PublicacionDAO y buscar las publicaciones del usuario
         PublicacionDAO publiDAO = new PublicacionDAO();
-        List<Publicacion> p = (List<Publicacion>)publiDAO.buscarpublicaciones();
-        List<Publicacion> pubs = new ArrayList();
-        UsuarioDAO usuarioDAO = new UsuarioDAO();
-        Usuario usuario = usuarioDAO.buscarUsuarioId(id);
-        // Recorrer lista y escoger publicaciones por id
-        for(Publicacion x: p){
-            if(x.getPublicacionUsuarioId().equals(usuario)){
-                pubs.add(x);
-            }
-        }
-        Collections.reverse(pubs);
-        return pubs;
+        List<Publicacion> publicaciones = publiDAO.buscarpublicaciones(id);
+        // Se reversa la lista para mostrar las publicaciones en orden cronológico
+        // descendente.
+        Collections.reverse(publicaciones);
+        return publicaciones;
     }
     
 }

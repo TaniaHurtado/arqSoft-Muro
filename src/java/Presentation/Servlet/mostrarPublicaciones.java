@@ -34,10 +34,15 @@ public class mostrarPublicaciones extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //
+        
+        // Crear el objeto de sesión actual y obtener el id del usuario loggeado
+        // por medio de getAttribute()
         HttpSession session = request.getSession();
         Integer id = Integer.valueOf(session.getAttribute("id").toString());
+        // Crear un controlador para manejo de publicaciones
         ManejoPublicacion mp = new ManejoPublicacion();
+        // Obtener la lista de todas las publicaciones hechas por el usuario con el
+        // id especificado, y asignar dicha lista a un atributo de sesión
         List<Publicacion> publicaciones = mp.publicaciones(id);        
         request.setAttribute("publicaciones", publicaciones);
     }
