@@ -45,13 +45,9 @@ import java.util.List;
         return publicaciones;
     }
     
-    public boolean editarPublicacion(Integer id, String contenido){
+    public Publicacion editarPublicacion(Integer id, String contenido){
         PublicacionDAO publicacionDAO = new PublicacionDAO();
-        return publicacionDAO.editarPublicacion(id, contenido);
-        /*Publicacion publicacion = publiDAO.buscarPublicacionId(id);
-        System.out.println("encontro publicacion en manejo" + publicacion);
-        publicacion.setPublicacionContenido(contenido);
-        Publicacion pb = publiDAO.persist(publicacion);*/       
+        return publicacionDAO.editarPublicacion(id, contenido);       
     }
     
     public Publicacion eliminarPublicacion(Integer id){

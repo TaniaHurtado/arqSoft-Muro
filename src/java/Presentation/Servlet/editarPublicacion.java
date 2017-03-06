@@ -43,11 +43,11 @@ public class editarPublicacion extends HttpServlet {
             // Obtener el id y el nuevo contenido de la publicación desde el JSP
             Integer idPub = Integer.valueOf(request.getParameter("idPub2").toString());
             String contenido = request.getParameter("contenido"); 
-            System.out.println("id "+ idPub + "contenido "+contenido);
+            System.out.println("id "+ idPub + "contenido "+ contenido);
             // Crear un objeto de ManejoPublicacion para gestionar la edición
             ManejoPublicacion mp = new ManejoPublicacion();
-            boolean resultado =  mp.editarPublicacion(idPub, contenido);
-            if (resultado == true) {
+            Publicacion publicacion =  mp.editarPublicacion(idPub, contenido);
+            if (publicacion != null) {
                 response.sendRedirect("principal.jsp");
             } else {
                 out.println("<p>La publicacion no pudo ser editada.</p>");

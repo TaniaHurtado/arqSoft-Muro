@@ -67,24 +67,19 @@ public class PublicacionDAO {
         return publicacion;
     }
     
-    public boolean editarPublicacion(Integer id, String contenido) {
+    public Publicacion editarPublicacion(Integer id, String contenido) {
         // Crear objeto EntityManager para correr queries
         EntityManager em = emf1.createEntityManager();
+        Publicacion publicacion = em.find(Publicacion.class, id);
         try {
-            em.createNamedQuery("Publicacion.updateContenido")
-            .setParameter("publicacionContenido", contenido)
-            .setParameter("publicacionId", id);
-            
-            /*pb = em.merge(em.find(Publicacion.class, id));
-            System.out.println("encontro pb"+pb);
-            pb.setPublicacionContenido(contenido);
-            System.out.println("cambio contenido"+ contenido);
-            em.getTransaction().commit();*/
-            
-            return true;
+            em.getTransaction().begin();
+            publicacion.setPublicacionContenido(contenido);
+            em.getTransaction().commit();
+            return publicacion;
         } catch (Exception e) {
             em.close();
-            return false;
+            publicacion = null;
+            return publicacion;
         }
     }
     
@@ -94,10 +89,6 @@ public class PublicacionDAO {
             Publicacion publicacion = em.find(Publicacion.class, id);
             em.getTransaction().begin();
             System.out.println(" DAO eliminar" + id);
-            //Collection<Comentario> comentarios = publicacion.getComentarioCollection();
-            //System.out.println(" comentarios en dao"+comentarios);
-            //publicacion.getComentarioCollection().removeAll(publicacion.getComentarioCollection());
-            //System.out.println(" comentarios en dao despues"+comentarios);
             em.remove(publicacion);
             em.getTransaction().commit();
             em.close();
@@ -108,21 +99,5 @@ public class PublicacionDAO {
             return null;
         }
     }
-    /*
-    public Publicacion buscarPublicacionPorId(Integer id){
-        EntityManager em = emf1.createEntityManager();
-        Query q = em.createNamedQuery("Publicacion.findByPublicacionId");
-        q.setParameter("publicacionId", id);
-        Publicacion publicacion = null;
-        try {
-            publicacion = (Publicacion) q.getSingleResult();
-            setmessage("Publicacion encontrada");
-        }catch (Exception e){
-            setmessage("Publicacion no encontrada");
-        } finally {
-            em.close();
-            return publicacion;
-        }
-    }*/
     
 }

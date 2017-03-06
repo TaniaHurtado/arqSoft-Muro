@@ -20,7 +20,6 @@
             String nick = (String) session.getAttribute("nick"); // Recoge la session
             String correo = (String) session.getAttribute("correo"); // Recoge la session
             Map<Publicacion, List<Comentario>> publicaciones = (HashMap<Publicacion, List<Comentario>>) session.getAttribute("publicaciones");
-            System.out.println(publicaciones);
         %>
         <div class="wrapper">
             <div class="wrapper-menu container">
@@ -89,7 +88,7 @@
                         <td><form action="editarPublicacion" method="post" style="text-align: center">
                                 <label>Contenido:</label><br/>
                                 <input name="idPub2" value="${pb.key.getPublicacionId()}" style="display: none"/>
-                                <textarea rows="4" cols="50" name="contenido" value="${pb.key.getPublicacionContenido()}"></textarea>
+                                <textarea rows="4" cols="50" name="contenido" placeholder="${pb.key.getPublicacionContenido()}"></textarea>
                                 <br/>
                                 <button type="submit">Editar Publicacion</button></form>
                         </td>
