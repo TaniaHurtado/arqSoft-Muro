@@ -5,11 +5,13 @@
  */
 package Presentation.Servlet;
 
+import BusinessLogic.Controller.GestionarUsuario;
 import BusinessLogic.Controller.ManejoComentario;
 import BusinessLogic.Controller.ManejoPublicacion;
 import DataAccess.Entity.Comentario;
 import DataAccess.Entity.Publicacion;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,17 +45,20 @@ public class mostrarPublicaciones extends HttpServlet {
         // por medio de getAttribute()
         HttpSession session = request.getSession();
         Integer id = Integer.valueOf(session.getAttribute("id").toString());
-        // Crear un controlador para manejo de publicaciones
+        // Crear objeto de GestionarUsuario para obtener la lista de amigos
+        GestionarUsuario buscarAmigos = new GestionarUsuario();
+        List<Integer> listaAmigos = buscarAmigos.amigos(id);
+        // Crear un controlador para manejo de publicaciones y otro para comentarios
         ManejoPublicacion mp = new ManejoPublicacion();
-        ManejoComentario mc = new ManejoComentario();
-        // Obtener la lista de todas las publicaciones hechas por el usuario con el
-        // id especificado, y asignar dicha lista a un atributo de sesión
-        List<Publicacion> publicacion = mp.publicaciones(id);
+        ManejoComentario mc = new ManejoComentario();      
         //List<Comentario> comentarios = mc.comentarios(publicaciones.get(0).getPublicacionId());
         Map<Publicacion, List<Comentario>> publicaciones = new HashMap<Publicacion, List<Comentario>>();
-        for(Publicacion p : publicacion) {
-            publicaciones.put(p, mc.comentarios(p.getPublicacionId()));
-        }
+        for(Integer i : listaAmigos) {
+            List<Publicacion> publicacion = publicacion = mp.publicaciones(i);            
+            for(Publicacion p : publicacion) {
+                publicaciones.put(p, mc.comentarios(p.getPublicacionId()));
+            }
+        }        
         session.setAttribute("publicaciones", publicaciones);
     }
 

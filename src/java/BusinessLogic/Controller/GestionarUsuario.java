@@ -4,10 +4,12 @@
  * and open the template in the editor.
  */
 package BusinessLogic.Controller;
+import DataAccess.DAO.AmigoDAO;
 import DataAccess.DAO.UsuarioDAO ;  
 import DataAccess.DAO.AutenticacionDAO ;
 import DataAccess.Entity.Usuario ; 
 import DataAccess.Entity.Autenticacion ; 
+import java.util.List;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;  
 /**
@@ -48,7 +50,10 @@ public class GestionarUsuario {
             return null;        
     }
     
-    
+    public List<Integer> amigos(Integer id) {
+        AmigoDAO amigoDAO = new AmigoDAO();
+        return amigoDAO.obtenerAmigos(id);
+    }
     
     
 }

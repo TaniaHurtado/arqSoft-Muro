@@ -19,7 +19,7 @@ import javax.persistence.Query;
  */
 public class AmigoDAO {
     
-    public EntityManagerFactory emf1= Persistence.createEntityManagerFactory("muroPU");
+    public EntityManagerFactory emf1= Persistence.createEntityManagerFactory("MuroPU");
     
     public Amigo persist(Amigo amigo) {
         EntityManager em = emf1.createEntityManager();

@@ -41,7 +41,7 @@ import java.util.List;
         List<Publicacion> publicaciones = publiDAO.buscarPublicaciones(id);
         // Se reversa la lista para mostrar las publicaciones en orden cronológico
         // descendente.
-        Collections.reverse(publicaciones);
+        //Collections.reverse(publicaciones);
         return publicaciones;
     }
     
