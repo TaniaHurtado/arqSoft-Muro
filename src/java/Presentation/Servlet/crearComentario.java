@@ -52,8 +52,9 @@ public class crearComentario extends HttpServlet {
             ManejoComentario mc = new ManejoComentario();
             Integer idPub = Integer.valueOf(request.getParameter("idPub").toString());
             Integer idUsuario = Integer.valueOf(session.getAttribute("id").toString());
-            Comentario comentario = mc.crearComentario(date, mensaje, idUsuario, idPub);
-            if (comentario != null) {                
+            
+            if (mensaje != null) {                
+                Comentario comentario = mc.crearComentario(date, mensaje, idUsuario, idPub);
                 response.sendRedirect("principal.jsp");
             } else {
                 out.println("<p> El comentario no pudo ser creado <p>");

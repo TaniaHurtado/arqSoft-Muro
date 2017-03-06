@@ -6,8 +6,10 @@
 package DataAccess.DAO;
 
 import BusinessLogic.Controller.sesionUsuario;
+import DataAccess.Entity.Comentario;
 import DataAccess.Entity.Publicacion;
 import DataAccess.Entity.Usuario;
+import java.util.Collection;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -56,6 +58,47 @@ public class PublicacionDAO {
         Publicacion publicacion = em.find(Publicacion.class, id);
         em.close();
         return publicacion;
+    }
+    
+    public boolean editarPublicacion(Integer id, String contenido) {
+        Publicacion pb;
+        EntityManager em = emf1.createEntityManager();
+        em.getTransaction().begin();
+        boolean success = true;
+        try {
+            
+            pb = em.merge(em.find(Publicacion.class, id));
+            System.out.println("encontro pb"+pb);
+            pb.setPublicacionContenido(contenido);
+            System.out.println("cambio contenido"+ contenido);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            success = false;
+        } finally {
+            em.close();
+        }
+        return success;
+    }
+    
+    public Publicacion eliminarPublicacion(int id) {
+        EntityManager em = emf1.createEntityManager();
+        try {
+            Publicacion publicacion = em.find(Publicacion.class, id);
+            em.getTransaction().begin();
+            System.out.println(" DAO eliminar" + id);
+            //Collection<Comentario> comentarios = publicacion.getComentarioCollection();
+            //System.out.println(" comentarios en dao"+comentarios);
+            //publicacion.getComentarioCollection().removeAll(publicacion.getComentarioCollection());
+            //System.out.println(" comentarios en dao despues"+comentarios);
+            em.remove(publicacion);
+            em.getTransaction().commit();
+            em.close();
+            return publicacion;
+        } catch(Exception e) {
+            e.printStackTrace(); 
+            em.close();
+            return null;
+        }
     }
     /*
     public Publicacion buscarPublicacionPorId(Integer id){

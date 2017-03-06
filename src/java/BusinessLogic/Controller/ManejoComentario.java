@@ -53,6 +53,16 @@ public class ManejoComentario {
             }
         }
         Collections.reverse(pubs);
+        System.out.println("comentarios de la publicacion "+ id + pubs);
         return pubs;
+    }
+    
+    public Comentario eliminarComentario(Integer id){
+        ComentarioDAO comDAO = new ComentarioDAO();        
+        Comentario comentario = comDAO.buscarComentarioId(id);
+        System.out.println("encontro publicacion en manejo para eliminar" + comentario);
+        comDAO.eliminarComentario(comentario.getComentarioId());    
+        
+        return comentario;        
     }
 }

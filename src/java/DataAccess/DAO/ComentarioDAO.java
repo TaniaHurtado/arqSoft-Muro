@@ -57,4 +57,20 @@ public class ComentarioDAO {
         return comentario;
     }
     
+    public Comentario eliminarComentario(int id) {
+        EntityManager em = emf1.createEntityManager();
+        Comentario comentario = em.find(Comentario.class, id);
+        em.getTransaction().begin();
+        try {
+            em.remove(comentario);
+            em.getTransaction().commit();
+            em.close();
+            return comentario;
+        } catch(Exception e) {
+            e.printStackTrace();
+            em.close();            
+            return null;
+        }
+    }
+    
 }

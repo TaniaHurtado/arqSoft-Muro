@@ -50,4 +50,24 @@ import java.util.List;
         return pubs;
     }
     
+    public Publicacion editarPublicacion(Integer id, String contenido){
+        PublicacionDAO publiDAO = new PublicacionDAO();
+        
+        Publicacion publicacion = publiDAO.buscarPublicacionId(id);
+        System.out.println("encontro publicacion en manejo" + publicacion);
+        publicacion.setPublicacionContenido(contenido);
+        Publicacion pb = publiDAO.persist(publicacion);
+        
+        return pb;        
+    }
+    
+    public Publicacion eliminarPublicacion(Integer id){
+        PublicacionDAO publiDAO = new PublicacionDAO();        
+        Publicacion publicacion = publiDAO.buscarPublicacionId(id);
+        System.out.println("encontro publicacion en manejo para eliminar" + publicacion);
+        publiDAO.eliminarPublicacion(publicacion.getPublicacionId());
+        //Publicacion pb = publiDAO.persist(publicacion);
+        
+        return publicacion;        
+    }
 }

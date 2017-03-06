@@ -7,6 +7,7 @@
         String nombre = (String) session.getAttribute("nombre");//Recoge la session
         String nick = (String) session.getAttribute("nick");//Recoge la session
         String correo = (String) session.getAttribute("correo");//Recoge la session
+        
 %>
     <head> 
         <title>Muro</title>
@@ -16,7 +17,7 @@
     <body> 
         <jsp:include page="mostrarPublicaciones"/>
         <div class="wrapper">
-            <div class="wrapper-menu">
+            <div class="wrapper-menu container">
                 <ul class="nav nav-tabs">
                     <li role="item" class="active"><a href="principal.jsp">Inicio</a></li>
                     <li role="item"><a href="profile.jsp"><%=nombre%></a></li>
@@ -50,30 +51,52 @@
                     <th>Contenido</th>
                     <th>Comentarios</th>
                     <th>Crear Comentario</th>
+                    <th>Editar publicacion</th>
                 </tr>
                 <c:forEach items="${publicaciones}" var="pb" >
                     <tr>
                         <td>${pb.getPublicacionFecha()}</td>
                         <td>${pb.getPublicacionContenido()}</td>                   
                         <td>
-                            <c:forEach items="${pb.getComentarioCollection()}" var="com" >
-                                <tr>                                 
-                                    <td>${com.getComentarioUsuarioId().getUsuarioNombre()}</td>
-                                    <td>${com.getComentarioContenido()}</td>
-                                </tr>
-                            </c:forEach>
-                        </td>
-                        <td>
                             <form method="post" action="crearComentario">
                                 <label>Comentario:</label><br/>
                                 <input name="idPub" value="${pb.getPublicacionId()}" style="display: none"/>
                                 <textarea rows="3" cols="30" name="comentario" placeholder="Escribe tu comentario"></textarea>
                                 <br/>
-                                <button type="submit">Crear Comentario</button>
-                            </form>
-                        </td>
-                    </tr>
+                                <button type="submit">Crear Comentario</button></form>
+                        </td></tr>
+                    <tr>
+                    <td><form action="editarPublicacion" method="post" style="text-align: center">
+                            <label>Contenido:</label><br/>
+                            
+                            <textarea rows="4" cols="50" name="contenido" placeholder="${pb.getPublicacionContenido()}"></textarea>
+                            <br/>
+                            <button type="submit">Editar Publicacion</button></form>
+                    </td>
+                    <td><form action="eliminarPublicacion" method="delete" style="text-align: center">
+                            <input name="idPub2" value="${pb.getPublicacionId()}" style="display: none"/>
+                            <button type="submit" value="remove" name="op" action="eliminarPublicacion" method="delete" >Remove Publicacion</button>
+                    </form>
+                    </td>
+                    
+                    </tr>                           
+                        <c:forEach items="${pb.getComentarioCollection()}" var="com" >
+                            <tr>                                 
+                                <td>${com.getComentarioUsuarioId().getUsuarioNombre()}</td> 
+                                <td>${com.getComentarioContenido()}</td>
+                                <td><input name="idCom" value="${com.getComentarioId()}" style="display: none"/></td>
+                                <td>
+                                <form action="eliminarComentario" method="delete" style="text-align: center">
+                                    <input name="idCom" value="${com.getComentarioId()}" style="display: none"/>
+                                    <button type="submit" value="remove" name="op" action="eliminarComentario" method="delete" >Remove Comentario</button>
+                                </form>
+                                </td>                                
+                            </tr>  
+                        </c:forEach>
+                    
+
                 </c:forEach>
+
             </table>
         </div>
         <script src="assets/js/jquery-3.1.1.min.js"></script>
