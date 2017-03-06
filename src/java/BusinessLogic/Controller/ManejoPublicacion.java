@@ -20,34 +20,29 @@ import java.util.List;
  * @author tania
  */public class ManejoPublicacion {
     public Publicacion crearPublicacion(Date fecha, String contenido, Integer id ){
+        // Crear un objeto de la clase Publicacion
         Publicacion publicacion = new Publicacion();
-        Calendar calendar = Calendar.getInstance();
-        java.util.Date currentDate = calendar.getTime();
-        java.sql.Date date = new java.sql.Date(currentDate.getTime());
+        // Crear un objeto de UsuarioDAO y realizar la búsqueda de Usuario por id
         UsuarioDAO usuarioDAO = new UsuarioDAO();
         Usuario usuario = usuarioDAO.buscarUsuarioId(id);
-        publicacion.setPublicacionFecha(date);
+        // Asignar atributos a la publicación
+        publicacion.setPublicacionFecha(fecha);
         publicacion.setPublicacionContenido(contenido);
         publicacion.setPublicacionUsuarioId(usuario);
-        PublicacionDAO publiDAO = new PublicacionDAO();
-        Publicacion publiE = publiDAO.persist(publicacion);
-        return publiE; 
+        // Crear un objeto PublicacionDAO para registrar en la base de datos
+        PublicacionDAO publicacionDAO = new PublicacionDAO();
+        Publicacion publicacionE = publicacionDAO.persist(publicacion);
+        return publicacionE; 
     }
     
     public List<Publicacion> publicaciones(Integer id){
+        // Crear un objeto PublicacionDAO y buscar las publicaciones del usuario
         PublicacionDAO publiDAO = new PublicacionDAO();
-        List<Publicacion> p = (List<Publicacion>)publiDAO.buscarpublicaciones();
-        List<Publicacion> pubs = new ArrayList();
-        UsuarioDAO usuarioDAO = new UsuarioDAO();
-        Usuario usuario = usuarioDAO.buscarUsuarioId(id);
-        // Recorrer lista y escoger publicaciones por id
-        for(Publicacion x: p){
-            if(x.getPublicacionUsuarioId().equals(usuario)){
-                pubs.add(x);
-            }
-        }
-        Collections.reverse(pubs);
-        return pubs;
+        List<Publicacion> publicaciones = publiDAO.buscarpublicaciones(id);
+        // Se reversa la lista para mostrar las publicaciones en orden cronológico
+        // descendente.
+        Collections.reverse(publicaciones);
+        return publicaciones;
     }
     
     public Publicacion editarPublicacion(Integer id, String contenido){

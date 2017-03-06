@@ -39,36 +39,32 @@ public class crearComentario extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException {        
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
+        
         try {
+            // Obtener texto del comentarion 
             String mensaje = request.getParameter("comentario");
+            // Crear un objeto sesión para obtener los parámetros
+            // id usuario e id publicacion
             HttpSession session = request.getSession();
-            Publicacion publicacion = new Publicacion();
+            Integer idPublicacion = Integer.valueOf(request.getParameter("idPub").toString());
+            Integer idUsuario = Integer.valueOf(session.getAttribute("id").toString());
+            // Establecer la fecha de creación del comentario
             Calendar calendar = Calendar.getInstance();
             java.util.Date currentDate = calendar.getTime();
             java.sql.Date date = new java.sql.Date(currentDate.getTime());
-            ManejoComentario mc = new ManejoComentario();
-            Integer idPub = Integer.valueOf(request.getParameter("idPub").toString());
-            Integer idUsuario = Integer.valueOf(session.getAttribute("id").toString());
-            
-            if (mensaje != null) {                
-                Comentario comentario = mc.crearComentario(date, mensaje, idUsuario, idPub);
+            // Crear un controlador ManejoComentario y crear el comentario con los parametros
+            ManejoComentario mc = new ManejoComentario();            
+            Comentario comentario = mc.crearComentario(date, mensaje, idUsuario, idPublicacion);
+            System.out.println(comentario);
+            if (comentario != null) {     
+                System.out.println("Redirect del comentario");
                 response.sendRedirect("principal.jsp");
             } else {
                 out.println("<p> El comentario no pudo ser creado <p>");
-            }
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet comentario</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet comentario at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            }            
         } finally {
             out.close();
         }

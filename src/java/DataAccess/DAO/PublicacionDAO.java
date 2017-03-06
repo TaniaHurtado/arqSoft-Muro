@@ -38,18 +38,27 @@ public class PublicacionDAO {
         return publicacion;
     }
     
-    public List buscarpublicaciones(){
+    public List buscarpublicaciones(Integer id){
+        // Crear objeto EntityManager para correr queries
         EntityManager em = emf1.createEntityManager();
-        List pub = null;
-        sesionUsuario us = new sesionUsuario();
-        String peticion = "select a from Publicacion a"; // where a.publicacionUsuarioId = " + us.getusuarioActual().getUsuarioId();
-        Query q = em.createQuery(peticion);
+        // Crear un objeto UsuarioDAO y buscar el usuario por id
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
+        Usuario usuario = usuarioDAO.buscarUsuarioId(id);
+        // Declarar una lista de publicaciones
+        List<Publicacion> publicaciones;
         try {
-            pub =  q.getResultList();
-        } catch (Exception e){
-        } finally {
+            // Asignar a la lista el resultado de la namedQuery findAllByUsuarioID
+            // Esta consulta debe recibir un objeto de clase Usuario, no un Integer
+            // Retorna las publicaciones pertenecientes al usuario
+            publicaciones = em.createNamedQuery("Publicacion.findAllByUsuario")
+            .setParameter("publicacionUsuarioId", usuario)
+            .getResultList();
             em.close();
-            return pub;
+            return publicaciones;
+        } catch (Exception e){
+            em.close();
+            publicaciones = null;
+            return publicaciones;
         }
     }
     
