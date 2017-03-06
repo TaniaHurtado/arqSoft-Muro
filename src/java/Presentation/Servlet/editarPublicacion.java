@@ -37,19 +37,23 @@ public class editarPublicacion extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
+        PrintWriter out = response.getWriter();
+                
+        try {
+            // Obtener el id y el nuevo contenido de la publicación desde el JSP
             Integer idPub = Integer.valueOf(request.getParameter("idPub2").toString());
             String contenido = request.getParameter("contenido"); 
-            System.out.println("id"+ idPub + "contenido"+contenido);
-            ManejoPublicacion nuevaPublicacion = new ManejoPublicacion();
-            Publicacion publicacion =  nuevaPublicacion.editarPublicacion(idPub,contenido);
-            System.out.println("encontro publicacion en servlet" + publicacion);
-            if (publicacion != null) {
+            System.out.println("id "+ idPub + "contenido "+contenido);
+            // Crear un objeto de ManejoPublicacion para gestionar la edición
+            ManejoPublicacion mp = new ManejoPublicacion();
+            boolean resultado =  mp.editarPublicacion(idPub, contenido);
+            if (resultado == true) {
                 response.sendRedirect("principal.jsp");
             } else {
                 out.println("<p>La publicacion no pudo ser editada.</p>");
             }
+        } finally {
+            out.close();
         }
         
     }

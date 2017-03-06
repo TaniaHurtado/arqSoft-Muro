@@ -38,22 +38,20 @@ import java.util.List;
     public List<Publicacion> publicaciones(Integer id){
         // Crear un objeto PublicacionDAO y buscar las publicaciones del usuario
         PublicacionDAO publiDAO = new PublicacionDAO();
-        List<Publicacion> publicaciones = publiDAO.buscarpublicaciones(id);
+        List<Publicacion> publicaciones = publiDAO.buscarPublicaciones(id);
         // Se reversa la lista para mostrar las publicaciones en orden cronológico
         // descendente.
         Collections.reverse(publicaciones);
         return publicaciones;
     }
     
-    public Publicacion editarPublicacion(Integer id, String contenido){
-        PublicacionDAO publiDAO = new PublicacionDAO();
-        
-        Publicacion publicacion = publiDAO.buscarPublicacionId(id);
+    public boolean editarPublicacion(Integer id, String contenido){
+        PublicacionDAO publicacionDAO = new PublicacionDAO();
+        return publicacionDAO.editarPublicacion(id, contenido);
+        /*Publicacion publicacion = publiDAO.buscarPublicacionId(id);
         System.out.println("encontro publicacion en manejo" + publicacion);
         publicacion.setPublicacionContenido(contenido);
-        Publicacion pb = publiDAO.persist(publicacion);
-        
-        return pb;        
+        Publicacion pb = publiDAO.persist(publicacion);*/       
     }
     
     public Publicacion eliminarPublicacion(Integer id){

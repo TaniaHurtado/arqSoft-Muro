@@ -29,16 +29,14 @@ public class PublicacionDAO {
         try {
             em.persist(publicacion);
             em.getTransaction().commit();
+            return publicacion;
         } catch(Exception e) {
-            e.printStackTrace();
-            em.getTransaction().rollback();
-        } finally {
             em.close();
-        }
-        return publicacion;
+            return null;
+        }        
     }
     
-    public List buscarpublicaciones(Integer id){
+    public List buscarPublicaciones(Integer id){
         // Crear objeto EntityManager para correr queries
         EntityManager em = emf1.createEntityManager();
         // Crear un objeto UsuarioDAO y buscar el usuario por id
@@ -70,23 +68,24 @@ public class PublicacionDAO {
     }
     
     public boolean editarPublicacion(Integer id, String contenido) {
-        Publicacion pb;
+        // Crear objeto EntityManager para correr queries
         EntityManager em = emf1.createEntityManager();
-        em.getTransaction().begin();
-        boolean success = true;
         try {
+            em.createNamedQuery("Publicacion.updateContenido")
+            .setParameter("publicacionContenido", contenido)
+            .setParameter("publicacionId", id);
             
-            pb = em.merge(em.find(Publicacion.class, id));
+            /*pb = em.merge(em.find(Publicacion.class, id));
             System.out.println("encontro pb"+pb);
             pb.setPublicacionContenido(contenido);
             System.out.println("cambio contenido"+ contenido);
-            em.getTransaction().commit();
+            em.getTransaction().commit();*/
+            
+            return true;
         } catch (Exception e) {
-            success = false;
-        } finally {
             em.close();
+            return false;
         }
-        return success;
     }
     
     public Publicacion eliminarPublicacion(int id) {

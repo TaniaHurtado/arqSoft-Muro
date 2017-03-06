@@ -43,7 +43,7 @@ public class ManejoComentario {
     public List<Comentario> comentarios(Integer id){
         // Crear un objeto ComentarioDAO y buscar los comentarios de la publicación
         ComentarioDAO comentarioDAO = new ComentarioDAO();
-        List<Comentario> comentarios = comentarioDAO.buscarcomentarios(id);
+        List<Comentario> comentarios = comentarioDAO.buscarComentarios(id);
         // Se reversa la lista para mostrar los comentarios en orden cronológico
         // descendente.
         Collections.reverse(comentarios);

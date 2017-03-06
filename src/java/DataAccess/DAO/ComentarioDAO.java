@@ -36,7 +36,7 @@ public class ComentarioDAO {
         return comentario;
     }
     
-    public List<Comentario> buscarcomentarios(Integer id){
+    public List<Comentario> buscarComentarios(Integer id){
         // Crear objeto EntityManager para correr queries
         EntityManager em = emf1.createEntityManager();
         // Crear un objeto PublicacionDAO y bus car la publicación por id

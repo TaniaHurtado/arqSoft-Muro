@@ -15,14 +15,11 @@
     <body> 
         <jsp:include page="mostrarPublicaciones"/>
         <%
-            String codigo = (String) session.getAttribute("ID");//Recoge la session
-            String nombre = (String) session.getAttribute("nombre");//Recoge la session
-            String nick = (String) session.getAttribute("nick");//Recoge la session
-            String correo = (String) session.getAttribute("correo");//Recoge la session
-            //List<Publicacion> publicaciones = (List<Publicacion>) session.getAttribute("publicaciones");
-            //List<Comentario> comentarios = (List<Comentario>) session.getAttribute("comentarios");
+            String codigo = (String) session.getAttribute("ID"); // Recoge la session
+            String nombre = (String) session.getAttribute("nombre"); // Recoge la session
+            String nick = (String) session.getAttribute("nick"); // Recoge la session
+            String correo = (String) session.getAttribute("correo"); // Recoge la session
             Map<Publicacion, List<Comentario>> publicaciones = (HashMap<Publicacion, List<Comentario>>) session.getAttribute("publicaciones");
-            System.out.println("ATENCION AQUI");
             System.out.println(publicaciones);
         %>
         <div class="wrapper">
