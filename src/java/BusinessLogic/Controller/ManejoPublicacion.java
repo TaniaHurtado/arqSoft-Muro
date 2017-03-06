@@ -20,18 +20,19 @@ import java.util.List;
  * @author tania
  */public class ManejoPublicacion {
     public Publicacion crearPublicacion(Date fecha, String contenido, Integer id ){
+        // Crear un objeto de la clase Publicacion
         Publicacion publicacion = new Publicacion();
-        Calendar calendar = Calendar.getInstance();
-        java.util.Date currentDate = calendar.getTime();
-        java.sql.Date date = new java.sql.Date(currentDate.getTime());
+        // Crear un objeto de UsuarioDAO y realizar la búsqueda de Usuario por id
         UsuarioDAO usuarioDAO = new UsuarioDAO();
         Usuario usuario = usuarioDAO.buscarUsuarioId(id);
-        publicacion.setPublicacionFecha(date);
+        // Asignar atributos a la publicación
+        publicacion.setPublicacionFecha(fecha);
         publicacion.setPublicacionContenido(contenido);
         publicacion.setPublicacionUsuarioId(usuario);
-        PublicacionDAO publiDAO = new PublicacionDAO();
-        Publicacion publiE = publiDAO.persist(publicacion);
-        return publiE; 
+        // Crear un objeto PublicacionDAO para registrar en la base de datos
+        PublicacionDAO publicacionDAO = new PublicacionDAO();
+        Publicacion publicacionE = publicacionDAO.persist(publicacion);
+        return publicacionE; 
     }
     
     public List<Publicacion> publicaciones(Integer id){

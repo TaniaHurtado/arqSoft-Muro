@@ -1,13 +1,9 @@
+<%@page import="DataAccess.Entity.Publicacion"%>
+<%@page import="java.util.List"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
 <html> 
-    <%
-        String codigo = (String) session.getAttribute("ID");//Recoge la session
-        String nombre = (String) session.getAttribute("nombre");//Recoge la session
-        String nick = (String) session.getAttribute("nick");//Recoge la session
-        String correo = (String) session.getAttribute("correo");//Recoge la session
-%>
     <head> 
         <title>Muro</title>
         <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css"/>
@@ -15,6 +11,13 @@
     </head> 
     <body> 
         <jsp:include page="mostrarPublicaciones"/>
+        <%     
+            String codigo = (String) session.getAttribute("ID");//Recoge la session
+            String nombre = (String) session.getAttribute("nombre");//Recoge la session
+            String nick = (String) session.getAttribute("nick");//Recoge la session
+            String correo = (String) session.getAttribute("correo");//Recoge la session
+            List<Publicacion> publicaciones = (List<Publicacion>)session.getAttribute("publicaciones");
+        %>
         <div class="wrapper">
             <div class="wrapper-menu">
                 <ul class="nav nav-tabs">
@@ -33,7 +36,7 @@
         <form action="cerrarSesion"><button type="submit" style="float: right;">Cerrar Sesion</button></form>
         <br/>            
         <h1 style="text-align: center">Bienvenido <%=nombre%></h1>
-        <hr/>   
+        <hr/>     
         <h2 style="text-align: center">Crear publicacion</h2>
         <form action="crearPublicacion" method="post" style="text-align: center">
             <label>Contenido:</label><br/>
@@ -51,13 +54,13 @@
                     <th>Comentarios</th>
                     <th>Crear Comentario</th>
                 </tr>
-                <c:forEach items="${publicaciones}" var="pb" >
+                <c:forEach items="<%=publicaciones%>" var="pb" >
                     <tr>
                         <td>${pb.getPublicacionFecha()}</td>
                         <td>${pb.getPublicacionContenido()}</td>                   
-                        <td>
+                        <td>  
                             <c:forEach items="${pb.getComentarioCollection()}" var="com" >
-                                <tr>                                 
+                                <tr> 
                                     <td>${com.getComentarioUsuarioId().getUsuarioNombre()}</td>
                                     <td>${com.getComentarioContenido()}</td>
                                 </tr>
@@ -79,6 +82,7 @@
         <script src="assets/js/jquery-3.1.1.min.js"></script>
         <script>
             $(document).ready(function () {
+                
             });
         </script>
     </body> 

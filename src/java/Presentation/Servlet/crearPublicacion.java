@@ -36,21 +36,28 @@ public class crearPublicacion extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
+        PrintWriter out = response.getWriter();
+                
+        try {
+            // Crear el objeto de sesión actual y obtener el id del usuario loggeado
+            // por medio de getAttribute()
             HttpSession session = request.getSession(false);
             Integer id = Integer.valueOf(session.getAttribute("id").toString());
+            // Contenido y fecha de la publicación
             String contenido = request.getParameter("contenido");
             Calendar calendar = Calendar.getInstance();
             java.util.Date currentDate = calendar.getTime();
             java.sql.Date fecha = new java.sql.Date(currentDate.getTime());
-            ManejoPublicacion nuevaPublicacion = new ManejoPublicacion();
-            Publicacion publicacion =  nuevaPublicacion.crearPublicacion(fecha, contenido, id);
+            // Crear un controlador para manejar la creación de la publicación
+            ManejoPublicacion mp = new ManejoPublicacion();
+            Publicacion publicacion =  mp.crearPublicacion(fecha, contenido, id);
             if (publicacion != null) {
                 response.sendRedirect("principal.jsp");
             } else {
                 out.println("<p>La publicacion no pudo ser creada.</p>");
             }
+        } finally {
+            out.close();
         }
     }
 
