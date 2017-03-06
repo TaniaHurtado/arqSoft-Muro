@@ -41,20 +41,13 @@ public class ManejoComentario {
             
     }
     public List<Comentario> comentarios(Integer id){
-        ComentarioDAO comenDAO = new ComentarioDAO();
-        List<Comentario> p = (List<Comentario>)comenDAO.buscarcomentarios();
-        List<Comentario> pubs = new ArrayList();
-        PublicacionDAO pubDAO = new PublicacionDAO();
-        Publicacion publicacion = pubDAO.buscarPublicacionId(id);
-        // Recorrer lista y escoger publicaciones por id
-        for(Comentario x: p){
-            if(x.getComentarioUsuarioId().equals(publicacion)){
-                pubs.add(x);
-            }
-        }
-        Collections.reverse(pubs);
-        System.out.println("comentarios de la publicacion "+ id + pubs);
-        return pubs;
+        // Crear un objeto ComentarioDAO y buscar los comentarios de la publicación
+        ComentarioDAO comentarioDAO = new ComentarioDAO();
+        List<Comentario> comentarios = comentarioDAO.buscarcomentarios(id);
+        // Se reversa la lista para mostrar los comentarios en orden cronológico
+        // descendente.
+        Collections.reverse(comentarios);
+        return comentarios;
     }
     
     public Comentario eliminarComentario(Integer id){

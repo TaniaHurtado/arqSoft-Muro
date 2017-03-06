@@ -36,20 +36,30 @@ public class ComentarioDAO {
         return comentario;
     }
     
-    public List buscarcomentarios(){
+    public List<Comentario> buscarcomentarios(Integer id){
+        // Crear objeto EntityManager para correr queries
         EntityManager em = emf1.createEntityManager();
-        List pub = null;
-        sesionUsuario us = new sesionUsuario();
-        String peticion = "select a from Comentario a"; // where a.publicacionUsuarioId = " + us.getusuarioActual().getUsuarioId();
-        Query q = em.createQuery(peticion);
+        // Crear un objeto PublicacionDAO y bus car la publicación por id
+        PublicacionDAO publicacionDAO = new PublicacionDAO();
+        Publicacion publicacion = publicacionDAO.buscarPublicacionId(id);
+        // Declarar una lista de comentarios
+        List<Comentario> comentarios;
         try {
-            pub =  q.getResultList();
-        } catch (Exception e){
-        } finally {
+            // Asignar a la lista el resultado de la namedQuery findAllByPublicacion
+            // Esta consulta debe recibir un objeto de clase Publicacion, no un Integer
+            // Retorna los comentarios pertenecientes a la pulicacion
+            comentarios = em.createNamedQuery("Comentario.findAllByPublicacion")
+            .setParameter("comentarioPublicacionId", publicacion)
+            .getResultList();
             em.close();
-            return pub;
+            return comentarios;
+        } catch (Exception e){
+            em.close();
+            comentarios = null;
+            return comentarios;
         }
     }
+    
     public Comentario buscarComentarioId(Integer id){
         EntityManager em = emf1.createEntityManager();
         Comentario comentario = em.find(Comentario.class, id);

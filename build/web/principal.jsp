@@ -1,4 +1,7 @@
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.Map"%>
 <%@page import="DataAccess.Entity.Publicacion"%>
+<%@page import="DataAccess.Entity.Comentario"%>
 <%@page import="java.util.List"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -16,7 +19,11 @@
             String nombre = (String) session.getAttribute("nombre");//Recoge la session
             String nick = (String) session.getAttribute("nick");//Recoge la session
             String correo = (String) session.getAttribute("correo");//Recoge la session
-            List<Publicacion> publicaciones = (List<Publicacion>) session.getAttribute("publicaciones");
+            //List<Publicacion> publicaciones = (List<Publicacion>) session.getAttribute("publicaciones");
+            //List<Comentario> comentarios = (List<Comentario>) session.getAttribute("comentarios");
+            Map<Publicacion, List<Comentario>> publicaciones = (HashMap<Publicacion, List<Comentario>>) session.getAttribute("publicaciones");
+            System.out.println("ATENCION AQUI");
+            System.out.println(publicaciones);
         %>
         <div class="wrapper">
             <div class="wrapper-menu container">
@@ -57,20 +64,26 @@
                 </tr>
                 <c:forEach items="<%=publicaciones%>" var="pb" >
                     <tr>
-                        <td>${pb.getPublicacionFecha()}</td>
-                        <td>${pb.getPublicacionContenido()}</td>                   
-                        <td>  
-                            <c:forEach items="${pb.getComentarioCollection()}" var="com" >
-                                <tr> 
+                        <td>${pb.key.getPublicacionFecha()}</td>
+                        <td>${pb.key.getPublicacionContenido()}</td>
+                        <td>
+                            <c:forEach items="${pb.value}" var="com" >
+                                <tr>
                                     <td>${com.getComentarioUsuarioId().getUsuarioNombre()}</td>
                                     <td>${com.getComentarioContenido()}</td>
+                                    <td>
+                                        <form action="eliminarComentario" method="delete" style="text-align: center">
+                                            <input name="idCom" value="${com.getComentarioId()}" style="display: none"/>
+                                            <button type="submit" value="remove" name="op" action="eliminarComentario" method="delete" >Remove Comentario</button>
+                                        </form>
+                                    </td> 
                                 </tr>
                             </c:forEach>
                         </td>
                         <td>
                             <form method="post" action="crearComentario">
                                 <label>Comentario:</label><br/>
-                                <input name="idPub" value="${pb.getPublicacionId()}" style="display: none"/>
+                                <input name="idPub" value="${pb.key.getPublicacionId()}" style="display: none"/>
                                 <textarea rows="3" cols="30" name="comentario" placeholder="Escribe tu comentario"></textarea>
                                 <br/>
                                 <button type="submit">Crear Comentario</button></form>
@@ -78,33 +91,18 @@
                     <tr>
                         <td><form action="editarPublicacion" method="post" style="text-align: center">
                                 <label>Contenido:</label><br/>
-
-                                <textarea rows="4" cols="50" name="contenido" placeholder="${pb.getPublicacionContenido()}"></textarea>
+                                <input name="idPub2" value="${pb.key.getPublicacionId()}" style="display: none"/>
+                                <textarea rows="4" cols="50" name="contenido" value="${pb.key.getPublicacionContenido()}"></textarea>
                                 <br/>
                                 <button type="submit">Editar Publicacion</button></form>
                         </td>
                         <td><form action="eliminarPublicacion" method="delete" style="text-align: center">
-                                <input name="idPub2" value="${pb.getPublicacionId()}" style="display: none"/>
+                                <input name="idPub2" value="${pb.key.getPublicacionId()}" style="display: none"/>
                                 <button type="submit" value="remove" name="op" action="eliminarPublicacion" method="delete" >Remove Publicacion</button>
                             </form>
                         </td>
 
                     </tr>                           
-                    <c:forEach items="${pb.getComentarioCollection()}" var="com" >
-                        <tr>                                 
-                            <td>${com.getComentarioUsuarioId().getUsuarioNombre()}</td> 
-                            <td>${com.getComentarioContenido()}</td>
-                            <td><input name="idCom" value="${com.getComentarioId()}" style="display: none"/></td>
-                            <td>
-                                <form action="eliminarComentario" method="delete" style="text-align: center">
-                                    <input name="idCom" value="${com.getComentarioId()}" style="display: none"/>
-                                    <button type="submit" value="remove" name="op" action="eliminarComentario" method="delete" >Remove Comentario</button>
-                                </form>
-                            </td>                                
-                        </tr>  
-                    </c:forEach>
-
-
                 </c:forEach>
 
             </table>

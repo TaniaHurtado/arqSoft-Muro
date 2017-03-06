@@ -5,10 +5,14 @@
  */
 package Presentation.Servlet;
 
+import BusinessLogic.Controller.ManejoComentario;
 import BusinessLogic.Controller.ManejoPublicacion;
+import DataAccess.Entity.Comentario;
 import DataAccess.Entity.Publicacion;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -41,9 +45,15 @@ public class mostrarPublicaciones extends HttpServlet {
         Integer id = Integer.valueOf(session.getAttribute("id").toString());
         // Crear un controlador para manejo de publicaciones
         ManejoPublicacion mp = new ManejoPublicacion();
+        ManejoComentario mc = new ManejoComentario();
         // Obtener la lista de todas las publicaciones hechas por el usuario con el
         // id especificado, y asignar dicha lista a un atributo de sesión
-        List<Publicacion> publicaciones = mp.publicaciones(id);        
+        List<Publicacion> publicacion = mp.publicaciones(id);
+        //List<Comentario> comentarios = mc.comentarios(publicaciones.get(0).getPublicacionId());
+        Map<Publicacion, List<Comentario>> publicaciones = new HashMap<Publicacion, List<Comentario>>();
+        for(Publicacion p : publicacion) {
+            publicaciones.put(p, mc.comentarios(p.getPublicacionId()));
+        }
         session.setAttribute("publicaciones", publicaciones);
     }
 

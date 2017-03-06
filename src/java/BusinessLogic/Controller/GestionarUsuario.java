@@ -9,7 +9,7 @@ import DataAccess.DAO.AutenticacionDAO ;
 import DataAccess.Entity.Usuario ; 
 import DataAccess.Entity.Autenticacion ; 
 import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpSession;  
 /**
  *
  * @author arqsoft2017i
